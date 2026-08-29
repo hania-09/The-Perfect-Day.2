@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Perfect Day</title>
+     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>    
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+    <header>
+        <p1>✪. ݁₊ ⊹ . ݁ ⟡ ݁ . ⊹ ₊ ݁.✪</p1>
+    </header>
+    <h1>Build Your Perfect Day Now!</h1>
+    <h3>Enter your name here :3</h3>
+    <input type="text" id="nameInput" placeholder="your lovely name">
+    <button id="submitButton">Submit</button>
+    
+    <p id="messageDisplay"></p>
+    <script>
+        const submitButton = document.getElementById('submitButton');
+        const nameInput = document.getElementById('nameInput');
+        const messageDisplay = document.getElementById('messageDisplay');
+
+        submitButton.addEventListener('click', () => {
+            const name = nameInput.value.trim();
+            if (name) {
+                messageDisplay.textContent = `Hello, ${name}! let's fix your bad day!`;
+            } else {
+                messageDisplay.textContent = 'Uh oh, enter a valid name.';
+            }
+        });
+
+    </script>
+    <body>
+        <link rel="stylesheet" type="text/css" href="./style.css">
+
+    </body>
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .quiz-container {
+            max-width: 700px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #question {
+            font-size: 24px;
+            margin: 30px 0;
+        }
+
+        .answer-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            background: #800033;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .answer-btn:hover {
+            background: #3730a3;
+        }
+
+        #progress {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        #pieChart {
+            width: 100%;
+            height: 450px;
+            margin-top: 20px;
+        }
+
+        #result {
+            font-size: 22px;
+            font-weight: bold;
+            color: #4f46e5;
+            margin-top: 20px;
+        }
+
+        #restart {
+            display: none;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #10b981;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+
+    <h1>Let's see what you're in need of to flip your mood</h1>
+
+    <div id="progress"></div>
+
+    <div id="question"></div>
+
+    <div id="answers"></div>
+
+    <!-- Pie chart -->
+    <div id="pieChart"></div>
+
+    <div id="result"></div>
+
+    <button id="restart" onclick="restartQuiz()">
+        Restart Quiz
+    </button>
+
+</div>
+
+
+<script>
+const questions = [
+
+        {
+            question: "What do you like to do when stressed?",
+            answers: [
+                {
+                    text: "watch a movie or listen to music",
+                    category: "Entertainment"
+                },
+                {
+                    text: "Read a book or sleep",
+                    category: "Relaxation"
+                },
+                {
+                    text: "Talk to someone about it",
+                    category: "Conversation"
+                },
+                {
+                    text: "Practise a hobby or eat your favourite meal",
+                    category: "Chillaxxing"
+                }
+            ]
+        },
+
+       
+
+        {
+            question: "Which one seems the least overwhelming on a bad-day?",
+            answers: [
+                {
+                    text: "Not talking about it",
+                    category: "Entertainment"
+                },
+                {
+                    text: "Laying in your bed",
+                    category: "Relaxation"
+                },
+                {
+                    text: "Letting it out to your bestie",
+                    category: "Conversation"
+                },
+                {
+                    text: "Treating yourself",
+                    category: "Chillaxxing"
+                }
+            ]
+        },
+
+        {
+            question: "Out of these emotions, what do you tend to feel the most on a usual bad day?",
+            answers: [
+                {
+                    text: "Frustration",
+                    category: "Entertainment"
+                },
+                {
+                    text: "Helpless",
+                    category: "Relaxation"
+                },
+                {
+                    text: "Panic",
+                    category: "Conversation"
+                },
+                {
+                    text: "Sadness",
+                    category: "Chillmaxxing"
+                }
+            ]
+        },
+
+        {
+            question: "How would you navigate through a bad day on your own?",
+            answers: [
+                {
+                    text: "Forgetting about it",
+                    category: "Entertainment"
+                },
+                {
+                    text: "Distracting myself",
+                    category: "Relaxation"
+                },
+                {
+                    text: "Texting a trsuted person for advice",
+                    category: "Conversation"
+                },
+                {
+                    text: "Smudging your mascara and then sleeping it off",
+                    category: "Chillmaxxing"
+                }
+            ]
+        }
+
+    ];
+
+let scores = {
+        "Entertainment": 0,
+        "Relaxation": 0,
+        "Conversation": 0,
+        "Chillmaxxing": 0
+    };
+let currentQuestion = 0;
+
+function showQuestion() {
+
+        const question = questions[currentQuestion];
+
+        document.getElementById("question").innerText =
+            question.question;
+
+        document.getElementById("progress").innerText =
+            `Question ${currentQuestion + 1} of ${questions.length}`;
+
+
+        const answersContainer =
+            document.getElementById("answers");
+
+        answersContainer.innerHTML = "";
+
+
+        question.answers.forEach(answer => {
+
+            const button = document.createElement("button");
+
+            button.className = "answer-btn";
+
+            button.innerText = answer.text;
+
+
+            button.onclick = function() {
+
+                selectAnswer(answer.category);
+
+            };
+
+
+            answersContainer.appendChild(button);
+
+        });
+    }
+function selectAnswer(category) {
+    scores[category]++;
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+
+            showQuestion();
+
+        } else {
+
+            finishQuiz();
+
+        }
+    }
+function finishQuiz() {
+    document.getElementById("question").style.display = "none";
+
+        document.getElementById("answers").style.display = "none";
+
+        document.getElementById("progress").style.display = "none";
+        let highestCategory = "";
+
+        let highestScore = 0;
+
+
+        for (const category in scores) {
+
+            if (scores[category] > highestScore) {
+
+                highestScore = scores[category];
+
+                highestCategory = category;
+
+            }
+        }
+
+    document.getElementById("result").innerHTML =
+            `Looks like you could use a bit of ${highestCategory} ;)`;
+    createPieChart();
+    document.getElementById("restart").style.display =
+            "inline-block";
+    }
+ function createPieChart() {
+
+        const data = [
+            {
+                labels: Object.keys(scores),
+
+                values: Object.values(scores),
+
+                type: "pie",
+
+                textinfo: "label+percent",
+
+                hoverinfo: "label+value+percent",
+
+                hole: 0.25
+            }
+        ];
+
+
+        const layout = {
+
+            title: "Your summer sadness quiz results♡",
+
+            height: 450,
+
+            showlegend: true
+        };
+
+
+        Plotly.newPlot(
+            "pieChart",
+            data,
+            layout
+        );
+    }
+ function restartQuiz() {
+
+        // Reset scores
+        scores = {
+            "Entertainment": 0,
+            "Relaxation": 0,
+            "Conversation": 0,
+            "Chillmaxxing": 0
+        };
+
+
+        // Reset question
+        currentQuestion = 0;
+        document.getElementById("question").style.display = "block";
+
+        document.getElementById("answers").style.display = "block";
+
+        document.getElementById("progress").style.display = "block";
+
+
+        document.getElementById("result").innerHTML = "";
+
+        document.getElementById("restart").style.display = "none";
+        Plotly.purge("pieChart");
+         showQuestion();
+    }
+    showQuestion();
+
+</script>
+
+</body>
+</html>
+
+    <footer>
+        <p>made with ❤️ by hania</p>
+    </footer>
